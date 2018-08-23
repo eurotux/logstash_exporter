@@ -54,6 +54,9 @@ func listen(exporterBindAddress string) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/metrics", http.StatusMovedPermanently)
 	})
+	HandleFunc("/_/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`ok`))
+	})
 
 	log.Infoln("Starting server on", exporterBindAddress)
 	if err := http.ListenAndServe(exporterBindAddress, nil); err != nil {
